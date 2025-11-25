@@ -1,0 +1,6 @@
+<svg width="384" height="216" viewBox="0 0 384 216" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="384" height="216" fill="#1a1a1a"/>
+  <rect x="152" y="78" width="80" height="60" rx="8" fill="#2a2a2a"/>
+  <path d="M176 96L196 108L176 120V96Z" fill="#4a4a4a"/>
+  <text x="192" y="160" text-anchor="middle" fill="#4a4a4a" font-family="system-ui" font-size="12">No thumbnail</text>
+</svg>
