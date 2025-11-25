@@ -127,20 +127,25 @@ pub fn scan_directory(path: &Path, progress: Arc<Mutex<Option<ScanProgress>>>) -
                 return None;
             }
 
-            // Get video metadata
+            // Get video metadata first (needed for duration)
             let metadata = match get_video_metadata(video_path) {
                 Ok(m) => m,
                 Err(_) => return None,
             };
 
-            // Generate thumbnail
+            // Generate thumbnail and sprite sheet IN PARALLEL
+            // These are the expensive ffmpeg operations that benefit from parallelization
             let thumb_hash = &fingerprint[..16];
             let thumbnail_path = proxies_dir_arc.join(format!("{}_thumb.jpg", thumb_hash));
-            let _ = generate_thumbnail(video_path, &thumbnail_path, metadata.duration);
-
-            // Generate sprite sheet
             let sprite_path = proxies_dir_arc.join(format!("{}_sprite.jpg", thumb_hash));
-            let has_sprite = generate_sprite_sheet(video_path, &sprite_path, metadata.duration).is_ok();
+
+            let (thumb_result, sprite_result) = rayon::join(
+                || generate_thumbnail(video_path, &thumbnail_path, metadata.duration),
+                || generate_sprite_sheet(video_path, &sprite_path, metadata.duration),
+            );
+
+            let _ = thumb_result;
+            let has_sprite = sprite_result.is_ok();
 
             let video = Video {
                 id: generate_id(&video_path.display().to_string()),
