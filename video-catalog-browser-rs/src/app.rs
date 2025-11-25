@@ -289,6 +289,7 @@ impl eframe::App for VideoCatalogApp {
             .show(ctx, |ui| {
             ui.add_space(8.0);
             ui.horizontal(|ui| {
+                ui.add_space(12.0); // Left padding for title
                 ui.label(egui::RichText::new("Video Catalog Browser").size(16.0).strong());
                 ui.add_space(8.0);
                 ui.label(egui::RichText::new("Quick preview of your video catalog").color(egui::Color32::from_rgb(100, 105, 115)));
@@ -590,8 +591,13 @@ impl VideoCatalogApp {
     }
 
     fn show_scan_progress(&mut self, ui: &mut egui::Ui) {
+        // Center content vertically in available space
+        let available_height = ui.available_height();
+        let content_height = 200.0; // Approximate height of scan progress content
+        let top_padding = (available_height - content_height) / 2.0;
+
         ui.vertical_centered(|ui| {
-            ui.add_space(100.0);
+            ui.add_space(top_padding.max(50.0));
 
             ui.spinner();
 
