@@ -1,0 +1,54 @@
+[package]
+name = "video-catalog-browser"
+version = "0.1.0"
+edition = "2021"
+authors = ["Amir Hossain"]
+description = "A fast native video catalog browser for macOS"
+
+[dependencies]
+# GUI Framework
+eframe = "0.30"
+egui = "0.30"
+egui_extras = { version = "0.30", features = ["image"] }
+
+# Async Runtime
+tokio = { version = "1", features = ["full"] }
+
+# Database
+rusqlite = { version = "0.31", features = ["bundled"] }
+
+# File System
+walkdir = "2"
+notify = "6"
+
+# Parallelism
+rayon = "1.10"
+crossbeam-channel = "0.5"
+
+# Image Processing
+image = "0.25"
+
+# Video Decoding
+ffmpeg-next = "8"
+
+# Utilities
+chrono = { version = "0.4", features = ["serde"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+md-5 = "0.10"
+lru = "0.12"
+rfd = "0.14"
+directories = "5"
+thiserror = "1"
+anyhow = "1"
+tracing = "0.1"
+tracing-subscriber = "0.3"
+arboard = "3"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+
+[profile.dev]
+opt-level = 1
